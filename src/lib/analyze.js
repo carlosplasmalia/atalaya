@@ -12,9 +12,12 @@ function buildPrompt(data) {
     zona: z.name,
     contactos_totales: z.total,
     militares: z.military,
-    ejemplos: z.contacts.slice(0, 10).map((c) => ({
+    ejemplos: z.contacts.slice(0, 15).map((c) => ({
       hex: c.icao24,
       callsign: c.callsign,
+      tipo: c.aircraft_type || c.type_code || null,
+      registro: c.registration,
+      operador: c.operator,
       pais: c.country,
       lat: c.lat?.toFixed(2),
       lon: c.lon?.toFixed(2),
@@ -87,6 +90,7 @@ Devuelve EXCLUSIVAMENTE un objeto JSON válido con esta forma exacta:
     }
   ],
   "por_zona": {
+    "gibraltar": "1-2 frases sobre estrecho, Ceuta, Melilla, con detalle si hay tipo de aeronave o operador identificado",
     "med-oeste": "1-2 frases",
     "mar-negro": "1-2 frases",
     "levante": "1-2 frases",
@@ -101,6 +105,8 @@ Reglas:
 - No em-dashes. Usa comas, dos puntos o puntos.
 - No inventes datos. Si una zona no tiene actividad reseñable, di "sin señales relevantes en este ciclo".
 - Los vuelos militares esporádicos son rutina, no los sobredimensiones. Solo destaca patrones (loitering, concentración anómala, callsigns raros).
+- **PRIORIDAD ALTA: zona gibraltar (Estrecho, Ceuta, Melilla)**. Aunque haya pocos contactos, examina siempre con detalle: tipo de aeronave, operador, altitud, si sugiere vigilancia, reconocimiento o patrullaje.
+- Si detectas tipo B-52, KC-135, RC-135, P-8, MQ-9, E-3, cita el modelo específico en la descripción del evento.
 - Si detectas algo tipo "B-52 en holding sobre Alborán" indícalo como observación con contexto: es publicado, ocurre en Bomber Task Force, no es prueba de conflicto inminente.
 - JSON puro, sin markdown, sin backticks.`;
 }

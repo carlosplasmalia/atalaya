@@ -2,15 +2,21 @@
 import Base from "../layouts/Base.astro";
 import SignalLevel from "../components/SignalLevel.astro";
 import MapCanvas from "../components/MapCanvas.astro";
+import LiveRadar from "../components/LiveRadar.astro";
 import { loadData } from "../lib/data-source.js";
 import { ZONES } from "../lib/zones.js";
+import { WEBCAMS } from "../lib/webcams.js";
 
 const { latest, index, meta } = await loadData();
 const a = latest.analysis || {};
 const m = latest.metrics || {};
 
-const contacts = Object.values(latest.raw?.flights?.perZone || {}).flatMap((z) => z.contacts || []);
+const perZone = latest.raw?.flights?.perZone || {};
+const contacts = Object.values(perZone).flatMap((z) => z.contacts || []);
 const fires = Object.values(latest.raw?.fires || {}).flatMap((z) => z.fires || []);
+
+const gibraltarContacts = perZone.gibraltar?.contacts || [];
+const gibraltarWebcams = WEBCAMS.filter((w) => w.zone === "gibraltar");
 
 function fmt(iso) {
   if (!iso || iso.startsWith("1970")) return "n/a";
@@ -20,30 +26,99 @@ function fmt(iso) {
     hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid",
   });
 }
+
+function contactLabel(c) {
+  const parts = [];
+  if (c.callsign) parts.push(c.callsign);
+  if (c.aircraft_type) parts.push(c.aircraft_type);
+  else if (c.type_code) parts.push(c.type_code);
+  if (c.registration) parts.push(`(${c.registration})`);
+  return parts.join(" ");
+}
 ---
 <Base>
-  <section class="mb-10">
+  <section class="mb-8">
     <div class="mb-4 text-xs text-dim uppercase tracking-widest">
-      <span class="text-ink">$</span> atalaya status --now
+      <span class="text-ink">$</span> atalaya status --live
     </div>
     <div class="flex flex-wrap items-baseline justify-between gap-4 mb-4">
       <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-widest">PANEL DE SITUACIÓN</h1>
       <div class="text-xs text-dim">last_cycle: <span class="text-ink">{fmt(latest.startedAt)}</span> · next: ≤1h</div>
     </div>
     <SignalLevel level={a.nivel_senal} note={a.nivel_senal_justificacion} />
-    <div class="mt-6 border border-line p-4 bg-panel">
+  </section>
+
+  <LiveRadar contacts={contacts} metrics={m} lastCycle={fmt(latest.startedAt)} nextCycle="≤1h" />
+
+  <section class="mb-8">
+    <div class="border border-line p-4 bg-panel">
       <div class="text-[11px] text-dim uppercase tracking-widest mb-2">&gt; resumen_ejecutivo</div>
       <p class="text-base sm:text-lg leading-relaxed">{a.resumen_ejecutivo}</p>
     </div>
   </section>
 
+  <section class="mb-8 border-2 border-danger relative">
+    <div class="absolute -top-3 left-4 bg-bg px-2 text-xs text-danger uppercase tracking-widest font-bold">
+      [prio.high] gibraltar.watch
+    </div>
+    <div class="p-5">
+      <div class="text-[11px] text-danger uppercase tracking-widest mb-3">
+        &gt; estrecho.gibraltar // ceuta // melilla // tarifa // algeciras
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4 mb-4">
+        <div>
+          <div class="text-xs text-dim uppercase tracking-widest mb-2">contactos militares (este ciclo)</div>
+          {gibraltarContacts.length === 0 ? (
+            <p class="text-dim text-sm">// sin contactos militares detectados en ventana actual</p>
+          ) : (
+            <ul class="text-sm space-y-1">
+              {gibraltarContacts.map((c) => (
+                <li class="border-l border-danger pl-3">
+                  <span class="text-danger font-bold">{c.callsign || c.icao24}</span>
+                  {c.aircraft_type && <span class="text-ink"> · {c.aircraft_type}</span>}
+                  {c.registration && <span class="text-dim"> · {c.registration}</span>}
+                  <div class="text-[11px] text-dim">
+                    {c.operator || c.country || "?"} · alt {c.baro_altitude ? Math.round(c.baro_altitude) + "m" : "—"} · {c.velocity ? Math.round(c.velocity * 1.94384) + "kt" : "—"}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div>
+          <div class="text-xs text-dim uppercase tracking-widest mb-2">verificación visual · streams live</div>
+          <a href="/camaras/" class="block border border-danger p-3 hover:bg-panel">
+            <div class="text-accent font-bold text-sm uppercase tracking-widest">&gt; abrir sala de cámaras</div>
+            <div class="text-[11px] text-dim mt-1">Ceuta 24/7, Estrecho Earth Cam, Gibraltar waterfront, Bósforo, más. Embebidos en /camaras/</div>
+          </a>
+          <ul class="text-[11px] space-y-1 mt-3">
+            {gibraltarWebcams.slice(0, 3).map((w) => (
+              <li>
+                <a class="text-dim hover:text-accent underline" href={w.watchUrl} target="_blank" rel="noopener">
+                  · {w.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-line pt-3 text-sm">
+        <span class="text-dim uppercase text-[11px] tracking-widest">análisis zona: </span>
+        <span class="text-ink">{a.por_zona?.gibraltar || "sin señales relevantes en este ciclo"}</span>
+      </div>
+    </div>
+  </section>
+
   {meta && meta.sintesis && (
-    <section class="mb-10 border-2 border-accent p-5 bg-panel relative">
+    <section class="mb-8 border-2 border-accent p-5 bg-panel relative">
       <div class="absolute -top-3 left-4 bg-bg px-2 text-xs text-accent uppercase tracking-widest">
         [claude.review] cada 4h
       </div>
       <div class="text-[11px] text-dim uppercase tracking-widest mb-3">
-        &gt; síntesis últimas {meta.ciclos_revisados || 4}h · generado {fmt(meta.generatedAt)}
+        &gt; síntesis últimos {meta.ciclos_revisados || 4} ciclos · generado {fmt(meta.generatedAt)}
       </div>
       <p class="text-base leading-relaxed mb-4">{meta.sintesis}</p>
       {meta.patrones?.length > 0 && (
@@ -54,11 +129,11 @@ function fmt(iso) {
           </ul>
         </div>
       )}
-      {meta.contradicciones?.length > 0 && (
+      {meta.contradicciones?.length > 0 && meta.contradicciones[0] && (
         <div class="mb-4">
           <div class="text-xs text-danger uppercase tracking-widest mb-2">Contradicciones con narrativa oficial</div>
           <ul class="space-y-1 text-sm">
-            {meta.contradicciones.map((p) => <li class="text-ink/90">· {p}</li>)}
+            {meta.contradicciones.filter(Boolean).map((p) => <li class="text-ink/90">· {p}</li>)}
           </ul>
         </div>
       )}
@@ -71,7 +146,7 @@ function fmt(iso) {
     </section>
   )}
 
-  <section class="mb-10 grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
+  <section class="mb-8 grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
     {[
       ["mil.contacts", m.military_contacts ?? 0],
       ["thermal.hits", m.fires ?? 0],
@@ -86,13 +161,47 @@ function fmt(iso) {
     ))}
   </section>
 
-  <section class="mb-10">
+  <section class="mb-8">
     <div class="text-[11px] text-dim uppercase tracking-widest mb-2">&gt; map.render(--last-cycle)</div>
     <MapCanvas contacts={contacts} fires={fires} />
   </section>
 
+  {contacts.length > 0 && (
+    <section class="mb-8">
+      <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; contacts.roster()</div>
+      <div class="border border-line overflow-x-auto">
+        <table class="w-full text-xs">
+          <thead class="bg-panel text-dim uppercase tracking-widest">
+            <tr>
+              <th class="text-left px-3 py-2">callsign</th>
+              <th class="text-left px-3 py-2">tipo</th>
+              <th class="text-left px-3 py-2">reg</th>
+              <th class="text-left px-3 py-2">operador</th>
+              <th class="text-left px-3 py-2">zona</th>
+              <th class="text-right px-3 py-2">alt</th>
+              <th class="text-right px-3 py-2">vel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {contacts.map((c) => (
+              <tr class="border-t border-line">
+                <td class="px-3 py-2 text-accent font-bold">{c.callsign || c.icao24}</td>
+                <td class="px-3 py-2">{c.aircraft_type || c.type_code || "?"}</td>
+                <td class="px-3 py-2 text-dim">{c.registration || "—"}</td>
+                <td class="px-3 py-2 text-dim">{c.operator || c.country || "—"}</td>
+                <td class="px-3 py-2 text-dim">{c.zone}</td>
+                <td class="px-3 py-2 text-right text-dim">{c.baro_altitude ? Math.round(c.baro_altitude) + "m" : "—"}</td>
+                <td class="px-3 py-2 text-right text-dim">{c.velocity ? Math.round(c.velocity * 1.94384) + "kt" : "—"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
   {a.eventos_destacados?.length > 0 && (
-    <section class="mb-10">
+    <section class="mb-8">
       <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; events.highlight()</div>
       <ul class="space-y-4">
         {a.eventos_destacados.map((e) => (
@@ -103,19 +212,16 @@ function fmt(iso) {
             {e.hipotesis && (
               <p class="text-sm mt-2 text-dim"><span class="text-accent uppercase text-xs">hipótesis // </span>{e.hipotesis}</p>
             )}
-            {e.fuentes?.length > 0 && (
-              <p class="text-[11px] text-deep mt-2">src: {e.fuentes.join(" · ")}</p>
-            )}
           </li>
         ))}
       </ul>
     </section>
   )}
 
-  <section class="mb-10">
+  <section class="mb-8">
     <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; zones.summary()</div>
     <div class="grid sm:grid-cols-2 gap-2">
-      {ZONES.map((z) => (
+      {ZONES.filter((z) => z.id !== "gibraltar").map((z) => (
         <div class="border border-line p-4 bg-panel">
           <div class="text-accent text-xs uppercase tracking-widest mb-1">[{z.id}] {z.name}</div>
           <div class="text-[11px] text-deep mb-2">// {z.focus}</div>
@@ -125,24 +231,4 @@ function fmt(iso) {
     </div>
   </section>
 
-  {(a.senales_debiles?.length > 0 || a.que_vigilar?.length > 0) && (
-    <section class="mb-10 grid sm:grid-cols-2 gap-4">
-      {a.senales_debiles?.length > 0 && (
-        <div class="border border-line p-4 bg-panel">
-          <div class="text-xs text-dim uppercase tracking-widest mb-3">&gt; weak_signals[]</div>
-          <ul class="text-sm space-y-2">
-            {a.senales_debiles.map((s) => <li>· {s}</li>)}
-          </ul>
-        </div>
-      )}
-      {a.que_vigilar?.length > 0 && (
-        <div class="border border-line p-4 bg-panel">
-          <div class="text-xs text-dim uppercase tracking-widest mb-3">&gt; watch_list[]</div>
-          <ul class="text-sm space-y-2">
-            {a.que_vigilar.map((s) => <li>· {s}</li>)}
-          </ul>
-        </div>
-      )}
-    </section>
-  )}
 </Base>

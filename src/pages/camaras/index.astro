@@ -1,0 +1,108 @@
+---
+import Base from "../../layouts/Base.astro";
+import { WEBCAMS } from "../../lib/webcams.js";
+
+const gibraltar = WEBCAMS.filter((w) => w.zone === "gibraltar");
+const others = WEBCAMS.filter((w) => w.zone !== "gibraltar");
+---
+<Base title="CAMS :: Atalaya" description="Cámaras públicas y streams en directo de los puntos calientes que monitoriza Atalaya.">
+  <div class="text-xs text-dim uppercase tracking-widest mb-4"><span class="text-ink">$</span> atalaya cams --live</div>
+  <h1 class="text-xl font-bold uppercase tracking-widest mb-2">CÁMARAS PÚBLICAS</h1>
+  <p class="text-dim text-sm mb-8">// verificación visual de los puntos que el radar rastrea. streams 24/7 embebidos donde YouTube lo permite. resto abre en pestaña nueva.</p>
+
+  <section class="mb-10 border-2 border-danger relative">
+    <div class="absolute -top-3 left-4 bg-bg px-2 text-xs text-danger uppercase tracking-widest font-bold">
+      [prio.high] gibraltar.watch
+    </div>
+    <div class="p-4">
+      <div class="text-[11px] text-danger uppercase tracking-widest mb-4">
+        &gt; estrecho.gibraltar // ceuta // la línea // algeciras
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        {gibraltar.map((w) => (
+          <div class="border border-line bg-panel">
+            <div class="border-b border-line px-3 py-2 flex justify-between items-center text-[11px] uppercase tracking-widest">
+              <div class="flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-signal animate-pulse"></span>
+                <span class="text-accent">{w.label}</span>
+              </div>
+              <a href={w.watchUrl} target="_blank" rel="noopener" class="text-dim hover:text-ink">↗ ext</a>
+            </div>
+            {w.embed ? (
+              <div class="relative aspect-video bg-black">
+                <iframe
+                  src={w.embed}
+                  class="absolute inset-0 w-full h-full"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                ></iframe>
+              </div>
+            ) : (
+              <a href={w.watchUrl} target="_blank" rel="noopener" class="block aspect-video bg-black relative border-b border-line hover:bg-panel">
+                <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                  <span class="text-4xl text-dim">▶</span>
+                  <span class="text-xs text-accent uppercase tracking-widest">no iframe · click para abrir</span>
+                  <span class="text-[10px] text-dim">{w.provider}</span>
+                </div>
+              </a>
+            )}
+            <div class="px-3 py-2 text-[11px] text-dim">
+              <span class="text-ink">{w.provider}</span> · {w.note}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; otras.zonas</div>
+    <div class="grid md:grid-cols-2 gap-4">
+      {others.map((w) => (
+        <div class="border border-line bg-panel">
+          <div class="border-b border-line px-3 py-2 flex justify-between items-center text-[11px] uppercase tracking-widest">
+            <div class="flex items-center gap-2">
+              <span class="inline-block w-2 h-2 rounded-full bg-signal animate-pulse"></span>
+              <span class="text-accent">{w.label}</span>
+            </div>
+            <a href={w.watchUrl} target="_blank" rel="noopener" class="text-dim hover:text-ink">↗ ext</a>
+          </div>
+          {w.embed ? (
+            <div class="relative aspect-video bg-black">
+              <iframe
+                src={w.embed}
+                class="absolute inset-0 w-full h-full"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+            </div>
+          ) : (
+            <a href={w.watchUrl} target="_blank" rel="noopener" class="block aspect-video bg-black relative border-b border-line hover:bg-panel">
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <span class="text-4xl text-dim">▶</span>
+                <span class="text-xs text-accent uppercase tracking-widest">no iframe · click para abrir</span>
+                <span class="text-[10px] text-dim">{w.provider}</span>
+              </div>
+            </a>
+          )}
+          <div class="px-3 py-2 text-[11px] text-dim">
+            <span class="text-ink">{w.provider}</span> · {w.note}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="border border-line bg-panel p-4 text-xs text-dim">
+    <div class="text-accent uppercase tracking-widest mb-2">// disclaimer</div>
+    <p class="mb-2">Los streams pertenecen a sus canales de origen. Atalaya solo enlaza fuentes públicas oficiales o de agregadores conocidos (YouTube, SkylineWebcams, EarthCam, WebcamTaxi, Alcaidesa Marina, Worldcam).</p>
+    <p>No consumimos vídeo de cámaras expuestas sin autorización (insecam y similares). Si un stream deja de emitir, YouTube mostrará un mensaje neutro y el bloque queda inerte hasta el próximo build.</p>
+  </section>
+</Base>

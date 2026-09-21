@@ -1,13 +1,41 @@
 ---
 const { level = "bajo", note } = Astro.props;
-const bars = { bajo: "▓░░", medio: "▓▓░", alto: "▓▓▓" };
-const colors = { bajo: "text-signal", medio: "text-accent", alto: "text-danger" };
-const c = colors[level] || colors.bajo;
-const bar = bars[level] || bars.bajo;
+const levels = ["bajo", "medio", "alto"];
+const active = Math.max(0, levels.indexOf(level));
+
+const palette = ["#00ff41", "#ffb000", "#ff003c"];
+const activeColor = palette[active];
+
+const cells = [
+  { label: "GREEN", border: "border-signal", bg: "bg-signal", text: "text-signal" },
+  { label: "AMBER", border: "border-accent", bg: "bg-accent", text: "text-accent" },
+  { label: "RED",   border: "border-danger", bg: "bg-danger", text: "text-danger" },
+];
+
+const rendered = cells.map((c, i) => ({
+  ...c,
+  on: i <= active,
+}));
 ---
-<div class={`inline-flex items-center gap-3 px-3 py-2 border border-line ${c}`}>
-  <span class="font-bold tracking-widest text-xs">SIGNAL</span>
-  <span class="font-bold">{bar}</span>
-  <span class={`uppercase tracking-widest text-xs font-bold`}>{level}</span>
-  {note && <span class="text-dim text-xs">// {note}</span>}
+<div class="border-2 relative" style={`border-color:${activeColor}`}>
+  <div class="px-3 py-1 text-[11px] uppercase tracking-widest border-b flex justify-between items-center"
+       style={`border-color:${activeColor}; color:${activeColor}`}>
+    <span>threat.level</span>
+    <span class="font-bold">[{cells[active].label}]</span>
+  </div>
+  <div class="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+    <div class="flex gap-1">
+      {rendered.map((c) => (
+        <div class:list={["w-16 h-8 border-2 flex items-center justify-center", c.border, c.on ? c.bg : "bg-transparent"]}>
+          <span class:list={["text-[10px] font-bold tracking-widest", c.on ? "text-black" : c.text]}>{c.label}</span>
+        </div>
+      ))}
+    </div>
+    <div class="flex-1">
+      <div class:list={["text-lg font-bold uppercase tracking-widest", cells[active].text]}>
+        NIVEL {level}
+      </div>
+      {note && <div class="text-xs text-dim mt-1">// {note}</div>}
+    </div>
+  </div>
 </div>

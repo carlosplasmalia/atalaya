@@ -1,5 +1,6 @@
 import { ZONES } from "../zones.js";
 import { classifyHex, callsignLikelyMilitary } from "../military-hex.js";
+import { enrichContacts } from "../aircraft-lookup.js";
 
 const OPENSKY_BASE = "https://opensky-network.org/api";
 
@@ -38,7 +39,7 @@ export async function collectFlights() {
     : null;
 
   const perZone = {};
-  const allMilitary = [];
+  const seedCandidates = [];
 
   for (const zone of ZONES) {
     let states = [];
@@ -49,16 +50,16 @@ export async function collectFlights() {
       continue;
     }
 
-    const zoneMilitary = [];
+    const candidates = [];
     for (const s of states) {
       const cls = classifyHex(s.icao24);
       const csMil = callsignLikelyMilitary(s.callsign);
       if ((cls && cls.military) || csMil) {
-        zoneMilitary.push({
+        candidates.push({
           ...s,
           zone: zone.id,
           country: cls?.country || null,
-          reason: cls?.military ? "hex_range" : "callsign",
+          reasonInit: cls?.military ? "hex_range" : "callsign",
         });
       }
     }
@@ -66,13 +67,57 @@ export async function collectFlights() {
     perZone[zone.id] = {
       name: zone.name,
       total: states.length,
-      military: zoneMilitary.length,
-      contacts: zoneMilitary,
+      candidates,
     };
-    allMilitary.push(...zoneMilitary);
+    seedCandidates.push(...candidates);
 
-    // Cortesía: pequeño delay entre zonas para no saturar OpenSky anon
     await new Promise((r) => setTimeout(r, 800));
+  }
+
+  // Enriquecer todos los candidatos con hexdb.io (tipo, operador, registro).
+  console.log(`[opensky] enriqueciendo ${seedCandidates.length} candidatos con hexdb.io`);
+  const enriched = await enrichContacts(seedCandidates, { concurrency: 5 });
+  const byIcao = new Map(enriched.map((c) => [c.icao24, c]));
+
+  // Rebuild perZone con clasificación final. Militar si:
+  //   - hex_range confirmado (US DoD ae0000-afffff), o
+  //   - metadata de operador coincide con military patterns, o
+  //   - callsign militar Y meta lookup no lo desmiente como civil claro
+  const allMilitary = [];
+  for (const [zoneId, z] of Object.entries(perZone)) {
+    const finalContacts = [];
+    for (const c of z.candidates) {
+      const enr = byIcao.get(c.icao24) || c;
+      const isMil =
+        c.reasonInit === "hex_range" && c.country === "US" ||
+        enr.meta_military === true ||
+        (c.reasonInit === "callsign" && !enr.meta?.operator);
+      if (!isMil) continue;
+      finalContacts.push({
+        icao24: c.icao24,
+        callsign: c.callsign,
+        origin_country: c.origin_country,
+        lat: c.lat,
+        lon: c.lon,
+        baro_altitude: c.baro_altitude,
+        velocity: c.velocity,
+        heading: c.heading,
+        on_ground: c.on_ground,
+        squawk: c.squawk,
+        zone: zoneId,
+        country: c.country,
+        reason: enr.meta_military ? "meta_military" : c.reasonInit,
+        registration: enr.meta?.registration || null,
+        aircraft_type: enr.meta?.type || null,
+        type_code: enr.meta?.typeCode || null,
+        manufacturer: enr.meta?.manufacturer || null,
+        operator: enr.meta?.operator || null,
+      });
+    }
+    z.military = finalContacts.length;
+    z.contacts = finalContacts;
+    delete z.candidates;
+    allMilitary.push(...finalContacts);
   }
 
   return { perZone, allMilitary, collectedAt: new Date().toISOString() };

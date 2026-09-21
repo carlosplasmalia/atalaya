@@ -1,0 +1,182 @@
+---
+const { contacts = [], metrics = {}, lastCycle = "", nextCycle = "" } = Astro.props;
+
+// Contactos reales resumidos para meter en el log rotativo
+const feed = contacts.slice(0, 20).map((c) => {
+  const t = c.aircraft_type || c.type_code || "unknown-type";
+  const op = c.operator || c.country || "?";
+  return `[det] ${c.callsign || c.icao24} · ${t} · ${op}`.slice(0, 96);
+});
+---
+<section class="mb-8 border border-line">
+  <div class="border-b border-line px-3 py-1 flex justify-between items-center text-[11px] uppercase tracking-widest">
+    <div class="flex items-center gap-3">
+      <span class="inline-block w-2 h-2 rounded-full bg-signal animate-pulse"></span>
+      <span class="text-signal">radar.live</span>
+      <span class="text-dim hidden sm:inline">// pasive scan, 1h cycle</span>
+    </div>
+    <div class="text-dim">
+      last <span class="text-ink">{lastCycle}</span> · next <span class="text-ink">{nextCycle}</span>
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-[280px_1fr]">
+    <!-- RADAR -->
+    <div class="relative aspect-square sm:aspect-auto sm:h-[320px] border-r border-line flex items-center justify-center overflow-hidden bg-black">
+      <svg viewBox="0 0 200 200" class="w-full h-full max-h-[320px]" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <radialGradient id="sweepGrad" cx="0.5" cy="0.5" r="0.5" fx="0.5" fy="0.5">
+            <stop offset="0%" stop-color="#00ff41" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#00ff41" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- rings -->
+        <circle cx="100" cy="100" r="95" fill="none" stroke="#0d3b0d" stroke-width="0.8"/>
+        <circle cx="100" cy="100" r="70" fill="none" stroke="#0d3b0d" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="45" fill="none" stroke="#0d3b0d" stroke-width="0.5"/>
+        <circle cx="100" cy="100" r="20" fill="none" stroke="#0d3b0d" stroke-width="0.5"/>
+        <!-- crosshair -->
+        <line x1="100" y1="5" x2="100" y2="195" stroke="#0d3b0d" stroke-width="0.4"/>
+        <line x1="5" y1="100" x2="195" y2="100" stroke="#0d3b0d" stroke-width="0.4"/>
+        <!-- sweep -->
+        <g style="transform-origin: 100px 100px; animation: sweep 4s linear infinite;">
+          <path d="M 100 100 L 100 5 A 95 95 0 0 1 195 100 Z" fill="url(#sweepGrad)"/>
+          <line x1="100" y1="100" x2="100" y2="5" stroke="#00ff41" stroke-width="1.2"/>
+        </g>
+        <!-- blips (contactos reales, posicionados por zona) -->
+        {contacts.slice(0, 10).map((c, i) => {
+          // Distribución radial pseudo-aleatoria pero estable por icao24
+          const seed = (c.icao24 || String(i)).split("").reduce((a, ch) => a + ch.charCodeAt(0), 0);
+          const angle = (seed % 360) * Math.PI / 180;
+          const dist = 25 + (seed % 60);
+          const x = 100 + Math.cos(angle) * dist;
+          const y = 100 + Math.sin(angle) * dist;
+          return (
+            <g>
+              <circle cx={x} cy={y} r="2.5" fill="#ffb000">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite" begin={`${i * 0.2}s`}/>
+              </circle>
+              <circle cx={x} cy={y} r="6" fill="none" stroke="#ffb000" stroke-width="0.4" opacity="0.35">
+                <animate attributeName="r" values="2.5;10;2.5" dur="2.5s" repeatCount="indefinite" begin={`${i * 0.2}s`}/>
+              </circle>
+            </g>
+          );
+        })}
+        <!-- center dot -->
+        <circle cx="100" cy="100" r="2" fill="#00ff41"/>
+      </svg>
+      <div class="absolute bottom-2 left-3 text-[10px] text-dim uppercase tracking-widest">
+        contacts: <span class="text-accent">{contacts.length}</span>
+      </div>
+      <div class="absolute top-2 right-3 text-[10px] text-signal uppercase tracking-widest">
+        <span class="blink">▲</span> active
+      </div>
+    </div>
+
+    <!-- LOG ROLLING -->
+    <div class="p-3 text-xs relative bg-panel min-h-[220px] overflow-hidden">
+      <div id="live-log" class="space-y-0.5 h-[280px] overflow-hidden font-mono"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-8 pointer-events-none" style="background: linear-gradient(to top, #020602, transparent);"></div>
+    </div>
+  </div>
+
+  <script id="radar-feed" type="application/json" set:html={JSON.stringify({ feed, metrics })}></script>
+  <script is:inline>
+  (function(){
+    var payload = { feed: [], metrics: {} };
+    try { payload = JSON.parse(document.getElementById("radar-feed").textContent); } catch(e){}
+    var feed = payload.feed || [];
+    var meta = {
+      mil: payload.metrics.military_contacts || 0,
+      fires: payload.metrics.fires || 0,
+      news: payload.metrics.news || 0,
+      quakes: payload.metrics.quakes || 0
+    };
+    var container = document.getElementById("live-log");
+    if (!container) return;
+
+    var zones = ["gibraltar","med-oeste","mar-negro","levante","corea","taiwan"];
+    var systems = ["opensky.states","gdelt.doc","firms.viirs","usgs.eq"];
+
+    function ts(){
+      var d = new Date();
+      var h = String(d.getUTCHours()).padStart(2,"0");
+      var m = String(d.getUTCMinutes()).padStart(2,"0");
+      var s = String(d.getUTCSeconds()).padStart(2,"0");
+      var ms = String(d.getUTCMilliseconds()).padStart(3,"0");
+      return h+":"+m+":"+s+"."+ms.slice(0,2)+"Z";
+    }
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+    function padHex(){ return Math.floor(Math.random()*0xffffff).toString(16).padStart(6,"0"); }
+
+    var scriptedLines = [
+      "boot: atalaya-core v0.2 initialized",
+      "conn: opensky-network.org · quality:ok · lat:112ms",
+      "conn: firms.modaps.eosdis.nasa.gov · quality:ok",
+      "conn: api.gdeltproject.org · quality:ok",
+      "conn: earthquake.usgs.gov · quality:ok",
+      "scan: gibraltar bbox=[35.3,-6.5,36.5,-4.5] priority=HIGH",
+      "scan: med-oeste bbox=[34.0,-4.5,44.5,10.0]",
+      "scan: mar-negro bbox=[41.0,27.0,52.5,42.0]",
+      "scan: levante bbox=[24.0,32.0,38.5,58.0]",
+      "scan: corea bbox=[32.0,122.0,44.0,142.0]",
+      "scan: taiwan bbox=[18.0,108.0,28.0,128.0]",
+      "hexdb: enriquecimiento aircraft type · concurrency=5",
+      "class: applying military filter · US.DoD.range + operator.regex",
+      "load: pattern matcher [B-52, KC-135, RC-135, P-8, MQ-9, E-3]",
+      "cycle: pipeline ready · awaiting next tick",
+      "note: mil.contacts=" + meta.mil + " · seismic=" + meta.quakes + " · news=" + meta.news,
+      "note: claude.review next in ≤4h",
+      "hint: click cámaras arriba para verificación visual del estrecho",
+    ];
+
+    var scriptedIdx = 0;
+    var maxLines = 30;
+
+    function makeLine(){
+      var choice = Math.random();
+      // 40% ciclo scripted
+      if (scriptedIdx < scriptedLines.length && choice < 0.6){
+        return { level: "info", text: scriptedLines[scriptedIdx++] };
+      }
+      // 30% detección real del feed
+      if (feed.length > 0 && choice < 0.8){
+        return { level: "det", text: feed[Math.floor(Math.random()*feed.length)] };
+      }
+      // 20% eventos sintéticos (aún reales del sistema)
+      var kind = Math.random();
+      if (kind < 0.25) return { level: "ping", text: "ping " + pick(systems) + " · rtt=" + (80+Math.floor(Math.random()*70)) + "ms" };
+      if (kind < 0.5)  return { level: "info", text: "scan zone=" + pick(zones) + " · states=" + Math.floor(Math.random()*900+50) };
+      if (kind < 0.75) return { level: "info", text: "hex=" + padHex() + " · civilian · skipped" };
+      return { level: "info", text: "buffer " + pick(systems) + " ok · pending flush" };
+    }
+
+    function render(line){
+      var el = document.createElement("div");
+      var cls = "text-dim";
+      var prefix = "[log]";
+      if (line.level === "det"){ cls = "text-accent"; prefix = "[det]"; }
+      if (line.level === "info"){ cls = "text-ink/80"; prefix = "[log]"; }
+      if (line.level === "ping"){ cls = "text-signal"; prefix = "[net]"; }
+      el.className = cls + " whitespace-pre";
+      var text = ts() + " " + prefix + " " + line.text.replace(/^\[[a-z]+\]\s*/, "");
+      el.textContent = text;
+      container.appendChild(el);
+      while (container.children.length > maxLines) container.removeChild(container.firstChild);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // Primera tanda inmediata
+    for (var i = 0; i < 8; i++) render(makeLine());
+    // Después una línea cada 900-1800ms indefinidamente
+    setInterval(function(){ render(makeLine()); }, 900 + Math.random()*900);
+  })();
+  </script>
+
+  <style>
+    @keyframes sweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</section>

@@ -1,0 +1,86 @@
+---
+const { metrics = {} } = Astro.props;
+const mil = metrics.military_contacts ?? 0;
+const fires = metrics.fires ?? 0;
+const news = metrics.news ?? 0;
+const quakes = metrics.quakes ?? 0;
+---
+<div id="scan-splash" class="fixed inset-0 z-[9999] bg-black text-ink font-mono flex items-center justify-center hidden"
+  data-mil={mil} data-fires={fires} data-news={news} data-quakes={quakes}>
+  <div class="w-full max-w-2xl px-6">
+    <div class="mb-8 text-xs text-dim uppercase tracking-widest">
+      <span class="text-ink">$</span> atalaya --boot --live
+      <span class="blink">_</span>
+    </div>
+    <div id="scan-lines" class="space-y-1 text-sm min-h-[280px]"></div>
+    <div class="mt-6 border border-line">
+      <div class="h-3 relative overflow-hidden">
+        <div id="scan-bar" class="absolute inset-y-0 left-0 bg-signal" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script is:inline>
+(function(){
+  var el = document.getElementById("scan-splash");
+  if (!el) return;
+  var seen = false;
+  try { seen = sessionStorage.getItem("atalaya_seen") === "1"; } catch(e){}
+  if (seen) return;
+  el.classList.remove("hidden");
+  var m = el.dataset;
+  var lines = [
+    "[ok] init.opensky ......................... connected",
+    "[ok] init.gdelt .............................. ready",
+    "[ok] init.firms.viirs ........................ ready",
+    "[ok] init.usgs.seismic ....................... ready",
+    "",
+    "> scanning zones ...",
+    "  [gibraltar]    bbox=[35.3,-6.5,36.5,-4.5]   priority=high",
+    "  [med-oeste]    bbox=[34.0,-4.5,44.5,10.0]",
+    "  [mar-negro]    bbox=[41.0,27.0,52.5,42.0]",
+    "  [levante]      bbox=[24.0,32.0,38.5,58.0]",
+    "  [corea]        bbox=[32.0,122.0,44.0,142.0]",
+    "  [taiwan]       bbox=[18.0,108.0,28.0,128.0]",
+    "",
+    "> mil.contacts    detected .................. " + m.mil,
+    "> thermal.hits    detected .................. " + m.fires,
+    "> news.titles     indexed ................... " + m.news,
+    "> seismic.events  logged .................... " + m.quakes,
+    "",
+    "> analyzing patterns .......................... ok",
+    "> claude.review pending [next in ≤4h]",
+    "",
+    "[render] loading panel ..."
+  ];
+  var container = document.getElementById("scan-lines");
+  var bar = document.getElementById("scan-bar");
+  var i = 0;
+  function step(){
+    if (i >= lines.length){
+      try { sessionStorage.setItem("atalaya_seen","1"); } catch(e){}
+      setTimeout(function(){
+        el.style.transition = "opacity 300ms";
+        el.style.opacity = "0";
+        setTimeout(function(){ el.remove(); }, 320);
+      }, 260);
+      return;
+    }
+    var l = lines[i];
+    var p = document.createElement("div");
+    if (l.startsWith("[ok]")) p.className = "text-signal";
+    else if (l.startsWith(">")) p.className = "text-accent";
+    else if (l.startsWith("[render]")) p.className = "text-signal";
+    else if (l.startsWith("[gibraltar]") || l.indexOf("[gibraltar]") !== -1) p.className = "text-danger";
+    else p.className = "text-dim";
+    p.textContent = l || " ";
+    container.appendChild(p);
+    bar.style.width = Math.round(((i+1)/lines.length)*100) + "%";
+    i++;
+    var delay = 40 + Math.random()*70;
+    if (l === "" ) delay = 20;
+    setTimeout(step, delay);
+  }
+  step();
+})();
+</script>

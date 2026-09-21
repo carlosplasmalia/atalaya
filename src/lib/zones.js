@@ -1,10 +1,17 @@
 // Bounding boxes [lamin, lomin, lamax, lomax]
 export const ZONES = [
   {
+    id: "gibraltar",
+    name: "Estrecho de Gibraltar",
+    bbox: [35.3, -6.5, 36.5, -4.5],
+    focus: "Estrecho, Ceuta, Melilla, Tarifa, Algeciras, Gibraltar",
+    priority: true,
+  },
+  {
     id: "med-oeste",
     name: "Mediterráneo occidental",
-    bbox: [34.0, -7.5, 44.5, 10.0],
-    focus: "Estrecho de Gibraltar, Alborán, Baleares, Argelia",
+    bbox: [34.0, -4.5, 44.5, 10.0],
+    focus: "Alborán, Baleares, Argelia, costa levantina",
   },
   {
     id: "mar-negro",
