@@ -1,18 +1,17 @@
 {
-  "generatedAt": "2026-09-21T08:30:08.383Z",
+  "generatedAt": "2026-09-21T10:27:35.672Z",
   "ciclos_revisados": 2,
   "rango": {
-    "desde": "2026-09-21T08:14:07.748Z",
-    "hasta": "2026-09-21T08:27:14.368Z"
+    "desde": "2026-09-21T09:44:30.680Z",
+    "hasta": "2026-09-21T10:07:03.731Z"
   },
-  "sintesis": "Los dos ciclos muestran los mismos cuatro contactos militares repetidos (2COOK, STNGR89, RFR7331, HABU11) sin rotación de callsigns, lo que sugiere presencia sostenida más que tráfico esporádico. STNGR89 y RFR7331 permanecen prácticamente en las mismas coordenadas del Levante (34.5N, 32.95E, cerca de Chipre) con altitudes bajas y velocidades reducidas, patrón compatible con orbitar sobre la base RAF Akrotiri o realizar tareas de vigilancia sostenida. El resto del panorama (SLINEX 26, Sea Wolf, ataques Pakistán-Afganistán) es ruido de fondo de titulares sin correlato aéreo observado.",
+  "sintesis": "La actividad militar observable en las últimas dos horas se concentra en la península coreana, con presencia sostenida de aeronaves estadounidenses de apoyo (UH-60M, UC-35D, C-12) y callsigns que se repiten entre ciclos. En el resto de zonas monitorizadas la señal es baja: un contacto aislado en el Mediterráneo occidental y un C-12 sobre el Mar Negro, coherente con patrones rutinarios. En el plano noticioso destacan los bombardeos pakistaníes en Afganistán y preparativos de una operación de detención del IDF en Cisjordania, sin correlato ADS-B en esas zonas. No hay focos térmicos ni sismos sospechosos.",
   "patrones": [
-    "STNGR89 y RFR7331 (UK) persisten entre ciclos en el mismo cuadrante de Chipre (34.5N, 32.95E) con altitudes y velocidades muy bajas; compatible con orbitar sobre Akrotiri o loitering de baja cota sobre el Levante oriental",
-    "2COOK (UK, hex 43ee43) se mantiene en el Mediterráneo occidental entre ambos ciclos con desplazamiento leve (39.00,2.49 a 39.47,3.54) y ganancia de altitud de 8969 m a 12192 m; sugiere tránsito ascendente hacia el este, no patrulla local",
-    "HABU11 (US) reaparece en los dos ciclos sobre Kyushu y Mar de Japón, coherente con reconocimiento habitual sobre el estrecho de Corea; no es concentración sino recurrencia esperable"
+    "Callsigns CARD99 (hex ae620d) y KEEP15 (hex ae5a0b) aparecen en ambos ciclos sobre Corea del Sur, en la misma franja 36.6-37.2 N / 127.0-127.4 E, lo que indica loitering o patrullaje sostenido más que un tránsito puntual.",
+    "Concentración de cuatro contactos militares US en península coreana y Mar de Japón en el ciclo más reciente (CARD99, CARD41, MAGIC53, KEEP15), frente a solo dos en el ciclo previo: escalada leve de presencia aérea aliada, compatible con ejercicio o rotación."
   ],
   "contradicciones": [
-    "La prensa enfatiza SLINEX 26 y Sea Wolf como los ejercicios visibles, pero el único patrón militar sostenido observable en ADS-B es británico sobre Chipre y Baleares, no naval indopacífico ni Egeo; la señal aérea no acompaña la narrativa dominante del día"
+    "Los titulares sobre bombardeos de Pakistán en Afganistán y operación IDF en Cisjordania no tienen reflejo en ADS-B militar en Levante ni en Asia Central en las zonas monitorizadas, pero la cobertura de esas áreas por los feeds usados es limitada, por lo que la ausencia no es evidencia sólida de contradicción."
   ],
-  "prediccion": "En las próximas 24 horas es probable que STNGR89 y RFR7331 sigan operando desde Akrotiri con salidas cortas sobre el Levante, y que 2COOK complete tránsito hacia el este del Mediterráneo. La actividad de ataques transfronterizos Pakistán-Afganistán puede generar más titulares sin que ello se traduzca en cambios detectables por ADS-B militar civil. Incertidumbre alta: solo se observan cuatro contactos por ciclo, hay sesgo evidente de cobertura OpenSky (mucha presencia UK/US, nula rusa, china o israelí), y la ausencia de FIRMS y sismos sospechosos no descarta actividad, solo que no ha aflorado en los sensores muestreados."
+  "prediccion": "Es probable que en las próximas 24 horas continúe la presencia de aeronaves de apoyo US sobre Corea del Sur con los mismos callsigns o rotaciones equivalentes, sin que ello implique escalada. En Gibraltar y Mediterráneo occidental se espera actividad militar baja o esporádica. La incógnita real está en el eje Pakistán-Afganistán y en Cisjordania: si los bombardeos y la operación de detención se confirman y amplían, podrían aparecer indicadores indirectos (aumento de tráfico civil desviado, focos térmicos FIRMS, picos noticiosos), pero con los feeds actuales Atalaya solo los captará parcialmente. Incertidumbre alta fuera de las zonas con buena cobertura ADS-B."
 }
