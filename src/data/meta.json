@@ -1,17 +1,18 @@
 {
-  "generatedAt": "2026-09-21T10:27:35.672Z",
-  "ciclos_revisados": 2,
+  "generatedAt": "2026-09-21T14:27:32.235Z",
+  "ciclos_revisados": 4,
   "rango": {
-    "desde": "2026-09-21T09:44:30.680Z",
-    "hasta": "2026-09-21T10:07:03.731Z"
+    "desde": "2026-09-21T11:07:02.533Z",
+    "hasta": "2026-09-21T14:07:07.372Z"
   },
-  "sintesis": "La actividad militar observable en las últimas dos horas se concentra en la península coreana, con presencia sostenida de aeronaves estadounidenses de apoyo (UH-60M, UC-35D, C-12) y callsigns que se repiten entre ciclos. En el resto de zonas monitorizadas la señal es baja: un contacto aislado en el Mediterráneo occidental y un C-12 sobre el Mar Negro, coherente con patrones rutinarios. En el plano noticioso destacan los bombardeos pakistaníes en Afganistán y preparativos de una operación de detención del IDF en Cisjordania, sin correlato ADS-B en esas zonas. No hay focos térmicos ni sismos sospechosos.",
+  "sintesis": "En las últimas cuatro horas la actividad militar detectable ha sido baja y dispersa, con un total de nueve contactos aislados repartidos entre Mar Negro, Levante, península coreana y estrecho de Taiwán. Destaca la presencia recurrente del C-12U-3 Huron DUKE75 de US Army sobre Rumanía y Mar Negro en tres de los cuatro ciclos, siempre con misma posición y altitud, lo que sugiere un patrón orbital de vigilancia sostenida. El resto de las zonas monitorizadas, incluido el estrecho de Gibraltar, permanecen sin señales militares relevantes. Solo se observa un titular geopolítico de peso: bombardeos paquistaníes en Afganistán, sin correlato en la actividad aérea observada.",
   "patrones": [
-    "Callsigns CARD99 (hex ae620d) y KEEP15 (hex ae5a0b) aparecen en ambos ciclos sobre Corea del Sur, en la misma franja 36.6-37.2 N / 127.0-127.4 E, lo que indica loitering o patrullaje sostenido más que un tránsito puntual.",
-    "Concentración de cuatro contactos militares US en península coreana y Mar de Japón en el ciclo más reciente (CARD99, CARD41, MAGIC53, KEEP15), frente a solo dos en el ciclo previo: escalada leve de presencia aérea aliada, compatible con ejercicio o rotación."
+    "El callsign DUKE75 (C-12U-3 Huron, US Army, hex ae04f2) aparece en tres ciclos consecutivos (12:07, 13:07 y 14:07 UTC) siempre sobre 44.45 N, 28.09 E a 8534 m de altitud, coincidente con vertical de Constanța/Rumanía. Es compatible con órbita de vigilancia ISR sostenida sobre el Mar Negro occidental.",
+    "Actividad militar US sistemáticamente ausente en Gibraltar y Mediterráneo occidental durante los cuatro ciclos, pese a niveles altos de tráfico civil (500 a 550 contactos por ciclo). Sirve como línea base: no hay refuerzo hacia el flanco sur europeo.",
+    "Rotación de contactos US en península coreana entre ciclos: tres CARD-series (helicópteros UH-60M y transpondedores) a baja altitud en el ciclo 11:07, luego KEEP99 aislado en 12:07 sobre la misma zona. Coherente con operaciones diurnas locales, no con despliegue extraordinario."
   ],
   "contradicciones": [
-    "Los titulares sobre bombardeos de Pakistán en Afganistán y operación IDF en Cisjordania no tienen reflejo en ADS-B militar en Levante ni en Asia Central en las zonas monitorizadas, pero la cobertura de esas áreas por los feeds usados es limitada, por lo que la ausencia no es evidencia sólida de contradicción."
+    ""
   ],
-  "prediccion": "Es probable que en las próximas 24 horas continúe la presencia de aeronaves de apoyo US sobre Corea del Sur con los mismos callsigns o rotaciones equivalentes, sin que ello implique escalada. En Gibraltar y Mediterráneo occidental se espera actividad militar baja o esporádica. La incógnita real está en el eje Pakistán-Afganistán y en Cisjordania: si los bombardeos y la operación de detención se confirman y amplían, podrían aparecer indicadores indirectos (aumento de tráfico civil desviado, focos térmicos FIRMS, picos noticiosos), pero con los feeds actuales Atalaya solo los captará parcialmente. Incertidumbre alta fuera de las zonas con buena cobertura ADS-B."
+  "prediccion": "En las próximas 24 horas es probable que DUKE75 u otro Huron equivalente mantenga la órbita ISR sobre Mar Negro occidental, dado el patrón repetido de tres ciclos. Cabe esperar continuidad de vuelos de baja altitud en península coreana en horario diurno local y presencia esporádica de transporte US en estrecho de Taiwán, sin señales de escalada. El foco geopolítico real a vigilar es la escalada Pakistán-Afganistán, que hasta ahora no se refleja en la actividad aérea observable por OpenSky en las zonas monitorizadas; si aparecieran vuelos militares paquistaníes o de EE. UU. hacia esa frontera, sería el primer indicio observacional de un cambio. Incertidumbre alta en Levante y Mar Negro por la cobertura intermitente de ADS-B militar."
 }
