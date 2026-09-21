@@ -1,0 +1,293 @@
+{
+  "id": "2026-09-21T15-07-05-334Z",
+  "startedAt": "2026-09-21T15:07:05.334Z",
+  "finishedAt": "2026-09-21T15:07:59.838Z",
+  "analysis": {
+    "resumen_ejecutivo": "Se registró un único vuelo militar en el Mar Negro y no se observaron actividades militares relevantes en el resto de las zonas monitorizadas, incluida la zona de Gibraltar. La actividad detectada corresponde a una aeronave de reconocimiento de EE.UU. en una zona de alta tensión.",
+    "nivel_senal": "bajo",
+    "nivel_senal_justificacion": "Solo un contacto militar aislado y sin corroboración de otras fuentes.",
+    "eventos_destacados": [
+      {
+        "titulo": "Avión militar detectado en Mar Negro",
+        "zona": "mar-negro",
+        "descripcion": "OpenSky registró un C‑12U‑3 Huron de US Army (registro 84‑00162) a 44.45 N, 28.09 E, a 8 352 m de altitud y 83 m/s de velocidad, clasificado como \"meta_military\".",
+        "hipotesis": "Podría tratarse de una misión de vigilancia o entrenamiento rutinario sobre la zona de conflicto en Ucrania, aunque la evidencia es insuficiente para inferir una escalada.",
+        "fuentes": [
+          "OpenSky"
+        ]
+      }
+    ],
+    "por_zona": {
+      "gibraltar": "sin señales relevantes en este ciclo; 6 contactos civiles detectados, ninguno militar.",
+      "med-oeste": "sin señales relevantes en este ciclo; 550 contactos civiles, sin aviones militares identificados.",
+      "mar-negro": "se detectó un único vuelo militar, un C‑12U‑3 Huron de US Army a 8 352 m, probablemente operativo rutinario.",
+      "levante": "sin señales relevantes en este ciclo; 145 contactos civiles, sin aviones militares.",
+      "corea": "sin señales relevantes en este ciclo; 87 contactos civiles, sin aviones militares.",
+      "taiwan": "sin señales relevantes en este ciclo; 113 contactos civiles, sin aviones militares."
+    },
+    "senales_debiles": [
+      "Presencia aislada de una aeronave militar estadounidense sobre el Mar Negro, zona de conflicto activo, sin patrones de repetición ni apoyo de otras fuentes."
+    ],
+    "que_vigilar": [
+      "Incremento de vuelos militares en el Mar Negro o en zonas adyacentes",
+      "Detección de otros tipos de aeronaves militares (P‑8, MQ‑9, etc.)",
+      "Aparición de focos térmicos en FIRMS",
+      "Eventos sísmicos sospechosos cerca de infraestructuras críticas",
+      "Titulares de GDELT que mencionen tensiones militares o diplomáticas"
+    ]
+  },
+  "metrics": {
+    "military_contacts": 1,
+    "fires": 0,
+    "news": 20,
+    "quakes": 48,
+    "quakes_suspicious": 0
+  },
+  "raw": {
+    "flights": {
+      "perZone": {
+        "gibraltar": {
+          "name": "Estrecho de Gibraltar",
+          "total": 6,
+          "military": 0,
+          "contacts": []
+        },
+        "med-oeste": {
+          "name": "Mediterráneo occidental",
+          "total": 550,
+          "military": 0,
+          "contacts": []
+        },
+        "mar-negro": {
+          "name": "Mar Negro y Ucrania",
+          "total": 88,
+          "military": 1,
+          "contacts": [
+            {
+              "icao24": "ae04f2",
+              "callsign": "0 GY",
+              "origin_country": "United States",
+              "lat": 44.4508,
+              "lon": 28.0947,
+              "baro_altitude": 8351.52,
+              "velocity": 82.9,
+              "heading": 304.38,
+              "on_ground": false,
+              "squawk": "1147",
+              "zone": "mar-negro",
+              "country": "US",
+              "reason": "meta_military",
+              "registration": "84-00162",
+              "aircraft_type": "C-12U-3 Huron",
+              "type_code": "BE20",
+              "manufacturer": "Beech",
+              "operator": "United States Army"
+            }
+          ]
+        },
+        "levante": {
+          "name": "Levante y Golfo Pérsico",
+          "total": 145,
+          "military": 0,
+          "contacts": []
+        },
+        "corea": {
+          "name": "Península coreana y Mar de Japón",
+          "total": 87,
+          "military": 0,
+          "contacts": []
+        },
+        "taiwan": {
+          "name": "Estrecho de Taiwán y Mar de China",
+          "total": 113,
+          "military": 0,
+          "contacts": []
+        }
+      }
+    },
+    "fires": {},
+    "news": [
+      {
+        "title": "10 Biggest And Most Important Marvel Comics Villains Of All Time",
+        "url": "https://screenrant.com/most-important-marvel-comic-villains-ever/",
+        "seendate": "20260920T200000Z",
+        "domain": "screenrant.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Eleanor Mills | Brisbane Times",
+        "url": "https://www.brisbanetimes.com.au/by/eleanor-mills-p538x1",
+        "seendate": "20260921T023000Z",
+        "domain": "brisbanetimes.com.au",
+        "language": "English",
+        "sourcecountry": "Australia",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Aaron Rowe Says Tells Fans To Target  Zionist  Robert Kraft & Defends Ed Sheeran",
+        "url": "https://allhiphop.com/news/aaron-rowe-says-tells-fans-to-target-zionist-robert-kraft-defends-ed-sheeran/",
+        "seendate": "20260920T191500Z",
+        "domain": "allhiphop.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Tras la salida de los músicos de su gira , Ed Sheeran admite  errore por no haber hablado sobre guerra en Gaza",
+        "url": "https://www.nacion.com/viva/tras-la-salida-de-los-musicos-de-su-gira-ed/RH6CWVH3MJCAFAK6OAGCJHKAEI/story/",
+        "seendate": "20260920T153000Z",
+        "domain": "nacion.com",
+        "language": "Spanish",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "  Im so , so sorry : Ed Sheeran addresses Gaza on stage after losing every opening act",
+        "url": "https://www.middleeasteye.net/news/im-so-so-sorry-ed-sheeran-addresses-gaza-stage-after-losing-every-opening-act",
+        "seendate": "20260920T210000Z",
+        "domain": "middleeasteye.net",
+        "language": "English",
+        "sourcecountry": "Israel",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "  King Charles was saddened that sorrows of old are being dragged up again  ",
+        "url": "https://www.thenews.com.pk/latest/1416971-king-charles-was-saddened-sorrows-of-old-are-being-dragged-up-again",
+        "seendate": "20260920T174500Z",
+        "domain": "thenews.com.pk",
+        "language": "English",
+        "sourcecountry": "Pakistan",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Nishikant Dubey threatens defamation suit against ex - Finance Secretary Subhash Garg",
+        "url": "https://www.prokerala.com/news/articles/a1814892.html",
+        "seendate": "20260921T130000Z",
+        "domain": "prokerala.com",
+        "language": "English",
+        "sourcecountry": "India",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "There Is No Palestine to  Free  ",
+        "url": "https://townhall.com/columnists/kevinmccullough/2026/09/20/there-is-no-palestine-to-free-n2683266",
+        "seendate": "20260920T170000Z",
+        "domain": "townhall.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Golpeado en múltiples frentes , Trump vuelve a apuntar sus cañones contra su enemigo favorito : la prensa",
+        "url": "https://www.lanacion.com.ar/estados-unidos/golpeado-en-multiples-frentes-trump-vuelve-a-apuntar-sus-canones-contra-su-enemigo-favorito-la-nid20092026/",
+        "seendate": "20260921T023000Z",
+        "domain": "lanacion.com.ar",
+        "language": "Spanish",
+        "sourcecountry": "Argentina",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Man , 82 , dies after brawl breaks out in Greece holiday hotspot over sun lounger",
+        "url": "https://www.mirror.co.uk/news/world-news/greece-beach-sun-lounger-row-37683327",
+        "seendate": "20260921T023000Z",
+        "domain": "mirror.co.uk",
+        "language": "English",
+        "sourcecountry": "United Kingdom",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Trump faced loss after loss . He then turned to a familiar target : The Press . ",
+        "url": "https://www.twincities.com/2026/09/20/trump-faced-loss-after-loss-he-then-turned-to-a-familiar-target-the-press-3/",
+        "seendate": "20260921T044500Z",
+        "domain": "twincities.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Winston Peters on the state of the world and realism over  megaphone  idealism",
+        "url": "https://www.nzherald.co.nz/nz/politics/winston-peters-says-on-the-state-of-the-world-and-realism-over-idealism/HXDHBVMVZRA65LEKWFVM3DUNP4/",
+        "seendate": "20260921T060000Z",
+        "domain": "nzherald.co.nz",
+        "language": "English",
+        "sourcecountry": "New Zealand",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Democrat Andy Beshear on pursuing  The Great American Reset  ",
+        "url": "https://www.cbsnews.com/news/democrat-andy-beshear-on-pursuing-the-great-american-reset/",
+        "seendate": "20260920T154500Z",
+        "domain": "cbsnews.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "In case you missed it :  Apartheid 2 . 0  | Lawyer slams disbarment bid | Kempton Park kidnapping capital",
+        "url": "https://www.citizen.co.za/news/in-case-you-missed-it-20-september-2026/",
+        "seendate": "20260920T193000Z",
+        "domain": "citizen.co.za",
+        "language": "English",
+        "sourcecountry": "South Africa",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Ed Sheeran apologizes in first show since Macklemore was removed from tour",
+        "url": "https://www.wptv.com/entertainment/ed-sheeran-apologizes-for-mistakes-in-first-show-since-macklemore-was-removed-from-tour-other-openers-quit",
+        "seendate": "20260920T210000Z",
+        "domain": "wptv.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Ed Sheeran apologizes in first show since Macklemore was removed from tour",
+        "url": "https://www.10news.com/entertainment/ed-sheeran-apologizes-for-mistakes-in-first-show-since-macklemore-was-removed-from-tour-other-openers-quit",
+        "seendate": "20260920T151500Z",
+        "domain": "10news.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Ed Sheeran apologizes in first show since Macklemore was removed from tour",
+        "url": "https://www.turnto23.com/entertainment/ed-sheeran-apologizes-for-mistakes-in-first-show-since-macklemore-was-removed-from-tour-other-openers-quit",
+        "seendate": "20260920T170000Z",
+        "domain": "turnto23.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "US , Iran War : Between Annihilation and Talks",
+        "url": "https://www.ummid.com/news/2026/9/21/us-iran-war-between-annihilation-and-talks.html",
+        "seendate": "20260921T071500Z",
+        "domain": "ummid.com",
+        "language": "English",
+        "sourcecountry": "India",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "The Rise and Fall of Venezuela  Bolivarian Revolution  ",
+        "url": "https://www.socialistalternative.org/2026/09/20/the-rise-and-fall-of-venezuelas-bolivarian-revolution/",
+        "seendate": "20260920T171500Z",
+        "domain": "socialistalternative.org",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      },
+      {
+        "title": "Ed Sheeran apologizes in first show since Macklemore was removed from tour",
+        "url": "https://www.koaa.com/entertainment/ed-sheeran-apologizes-for-mistakes-in-first-show-since-macklemore-was-removed-from-tour-other-openers-quit",
+        "seendate": "20260920T153000Z",
+        "domain": "koaa.com",
+        "language": "English",
+        "sourcecountry": "United States",
+        "queryId": "tension-diplomatica"
+      }
+    ],
+    "quakes_suspicious": []
+  }
+}
