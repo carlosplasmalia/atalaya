@@ -1,0 +1,58 @@
+---
+const { contacts = [], fires = [] } = Astro.props;
+const payload = { contacts, fires };
+---
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<div class="border border-line">
+  <div class="border-b border-line px-3 py-1 text-[11px] text-dim uppercase tracking-widest flex justify-between">
+    <span>&gt; map.render()</span>
+    <span>naranja: militar · rojo: térmico</span>
+  </div>
+  <div id="map" class="w-full h-[520px] bg-black"></div>
+</div>
+<script id="map-data" type="application/json" set:html={JSON.stringify(payload)}></script>
+<script>
+  import("https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js").then((L) => {
+    const raw = document.getElementById("map-data")?.textContent || "{}";
+    const { contacts, fires } = JSON.parse(raw);
+
+    const map = L.map("map", { worldCopyJump: true, minZoom: 2 }).setView([30, 20], 3);
+    L.tileLayer(
+      "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+      { attribution: "© OpenStreetMap · © CARTO", subdomains: "abcd" }
+    ).addTo(map);
+
+    contacts.forEach((c) => {
+      if (typeof c.lat !== "number" || typeof c.lon !== "number") return;
+      const marker = L.circleMarker([c.lat, c.lon], {
+        radius: 5,
+        color: "#ffb000",
+        weight: 1.5,
+        fillColor: "#ffb000",
+        fillOpacity: 0.55,
+      }).addTo(map);
+      const cs = c.callsign || c.icao24 || "?";
+      const alt = c.baro_altitude ? Math.round(c.baro_altitude) + " m" : "—";
+      const vel = c.velocity ? Math.round(c.velocity * 1.94384) + " kt" : "—";
+      marker.bindPopup(
+        `<div style="font-family:monospace;font-size:11px">
+           <b>${cs}</b><br/>
+           hex ${c.icao24 || "?"} · ${c.country || "?"}<br/>
+           alt ${alt} · vel ${vel}<br/>
+           ${c.reason || ""}
+         </div>`
+      );
+    });
+
+    fires.forEach((f) => {
+      if (typeof f.lat !== "number" || typeof f.lon !== "number") return;
+      L.circleMarker([f.lat, f.lon], {
+        radius: 3,
+        color: "#ff003c",
+        weight: 0,
+        fillColor: "#ff003c",
+        fillOpacity: 0.6,
+      }).addTo(map);
+    });
+  });
+</script>

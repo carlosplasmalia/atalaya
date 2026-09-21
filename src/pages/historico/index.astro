@@ -1,0 +1,43 @@
+---
+import Base from "../../layouts/Base.astro";
+import { loadData } from "../../lib/data-source.js";
+
+const { index } = await loadData();
+
+function fmt(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  return d.toLocaleString("es-ES", {
+    day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  });
+}
+
+const levelStyles = { bajo: "text-signal", medio: "text-accent", alto: "text-danger" };
+---
+<Base title="LOG :: Atalaya">
+  <div class="text-xs text-dim uppercase tracking-widest mb-4"><span class="text-ink">$</span> atalaya log --last=7d</div>
+  <h1 class="text-xl font-bold uppercase tracking-widest mb-2">HISTÓRICO DE CICLOS</h1>
+  <p class="text-dim text-sm mb-8">// ciclo cada 1h · retención 7 días · máx 168 registros</p>
+
+  {index.length === 0 && <p class="text-dim">// sin ciclos aún</p>}
+
+  <ul class="space-y-2">
+    {index.map((c) => (
+      <li class="border border-line p-4 bg-panel">
+        <div class="flex flex-wrap justify-between items-baseline gap-3 mb-2">
+          <a href={`/historico/${c.id}/`} class="text-accent hover:text-ink text-sm font-bold">
+            &gt; {fmt(c.startedAt)}
+          </a>
+          <div class="flex gap-3 text-[11px] text-dim uppercase tracking-widest">
+            <span class={levelStyles[c.nivel] || "text-dim"}>[{c.nivel || "?"}]</span>
+            <span>mil:{c.metrics?.military_contacts ?? 0}</span>
+            <span>fire:{c.metrics?.fires ?? 0}</span>
+            <span>news:{c.metrics?.news ?? 0}</span>
+          </div>
+        </div>
+        <p class="text-sm text-ink/90">{c.resumen}</p>
+      </li>
+    ))}
+  </ul>
+</Base>

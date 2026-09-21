@@ -1,0 +1,88 @@
+/* Efecto CRT sutil: scanlines + leve glow verde */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+html,
+body {
+  background: #000;
+}
+
+body {
+  text-shadow: 0 0 1px rgba(0, 255, 65, 0.35);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 20, 5, 0.35) 2px,
+    rgba(0, 20, 5, 0.35) 3px
+  );
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.65) 100%);
+  z-index: 2;
+}
+
+main,
+header,
+footer {
+  position: relative;
+  z-index: 3;
+}
+
+/* Cursor parpadeante ASCII */
+.blink {
+  animation: blink 1.05s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Overrides Leaflet para que encaje en el CRT */
+.leaflet-container {
+  background: #000 !important;
+  filter: hue-rotate(80deg) saturate(1.5) contrast(1.1);
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #001a05 !important;
+  color: #00ff41 !important;
+  border: 1px solid #00ff41;
+  border-radius: 0 !important;
+}
+.leaflet-popup-content b {
+  color: #ffb000;
+}
+.leaflet-control-attribution {
+  background: rgba(0, 20, 5, 0.7) !important;
+  color: #008f11 !important;
+}
+.leaflet-control-attribution a {
+  color: #00ff41 !important;
+}
+.leaflet-control-zoom a {
+  background: #001a05 !important;
+  color: #00ff41 !important;
+  border-color: #0d3b0d !important;
+  border-radius: 0 !important;
+}
+
+/* Selection */
+::selection {
+  background: #00ff41;
+  color: #000;
+}

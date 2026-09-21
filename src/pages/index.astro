@@ -1,0 +1,148 @@
+---
+import Base from "../layouts/Base.astro";
+import SignalLevel from "../components/SignalLevel.astro";
+import MapCanvas from "../components/MapCanvas.astro";
+import { loadData } from "../lib/data-source.js";
+import { ZONES } from "../lib/zones.js";
+
+const { latest, index, meta } = await loadData();
+const a = latest.analysis || {};
+const m = latest.metrics || {};
+
+const contacts = Object.values(latest.raw?.flights?.perZone || {}).flatMap((z) => z.contacts || []);
+const fires = Object.values(latest.raw?.fires || {}).flatMap((z) => z.fires || []);
+
+function fmt(iso) {
+  if (!iso || iso.startsWith("1970")) return "n/a";
+  const d = new Date(iso);
+  return d.toLocaleString("es-ES", {
+    day: "2-digit", month: "2-digit", year: "2-digit",
+    hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid",
+  });
+}
+---
+<Base>
+  <section class="mb-10">
+    <div class="mb-4 text-xs text-dim uppercase tracking-widest">
+      <span class="text-ink">$</span> atalaya status --now
+    </div>
+    <div class="flex flex-wrap items-baseline justify-between gap-4 mb-4">
+      <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-widest">PANEL DE SITUACIÓN</h1>
+      <div class="text-xs text-dim">last_cycle: <span class="text-ink">{fmt(latest.startedAt)}</span> · next: ≤1h</div>
+    </div>
+    <SignalLevel level={a.nivel_senal} note={a.nivel_senal_justificacion} />
+    <div class="mt-6 border border-line p-4 bg-panel">
+      <div class="text-[11px] text-dim uppercase tracking-widest mb-2">&gt; resumen_ejecutivo</div>
+      <p class="text-base sm:text-lg leading-relaxed">{a.resumen_ejecutivo}</p>
+    </div>
+  </section>
+
+  {meta && meta.sintesis && (
+    <section class="mb-10 border-2 border-accent p-5 bg-panel relative">
+      <div class="absolute -top-3 left-4 bg-bg px-2 text-xs text-accent uppercase tracking-widest">
+        [claude.review] cada 4h
+      </div>
+      <div class="text-[11px] text-dim uppercase tracking-widest mb-3">
+        &gt; síntesis últimas {meta.ciclos_revisados || 4}h · generado {fmt(meta.generatedAt)}
+      </div>
+      <p class="text-base leading-relaxed mb-4">{meta.sintesis}</p>
+      {meta.patrones?.length > 0 && (
+        <div class="mb-4">
+          <div class="text-xs text-accent uppercase tracking-widest mb-2">Patrones detectados</div>
+          <ul class="space-y-1 text-sm">
+            {meta.patrones.map((p) => <li class="text-ink/90">· {p}</li>)}
+          </ul>
+        </div>
+      )}
+      {meta.contradicciones?.length > 0 && (
+        <div class="mb-4">
+          <div class="text-xs text-danger uppercase tracking-widest mb-2">Contradicciones con narrativa oficial</div>
+          <ul class="space-y-1 text-sm">
+            {meta.contradicciones.map((p) => <li class="text-ink/90">· {p}</li>)}
+          </ul>
+        </div>
+      )}
+      {meta.prediccion && (
+        <div>
+          <div class="text-xs text-accent uppercase tracking-widest mb-2">Vector probable próximas 24h</div>
+          <p class="text-sm text-ink/90">{meta.prediccion}</p>
+        </div>
+      )}
+    </section>
+  )}
+
+  <section class="mb-10 grid grid-cols-2 sm:grid-cols-5 gap-2 text-center">
+    {[
+      ["mil.contacts", m.military_contacts ?? 0],
+      ["thermal.hits", m.fires ?? 0],
+      ["news.titles", m.news ?? 0],
+      ["seismic.evt", m.quakes ?? 0],
+      ["seismic.susp", m.quakes_suspicious ?? 0],
+    ].map(([label, val]) => (
+      <div class="border border-line p-3 bg-panel">
+        <div class="text-2xl font-bold text-accent">{val}</div>
+        <div class="text-[10px] uppercase tracking-widest text-dim mt-1">{label}</div>
+      </div>
+    ))}
+  </section>
+
+  <section class="mb-10">
+    <div class="text-[11px] text-dim uppercase tracking-widest mb-2">&gt; map.render(--last-cycle)</div>
+    <MapCanvas contacts={contacts} fires={fires} />
+  </section>
+
+  {a.eventos_destacados?.length > 0 && (
+    <section class="mb-10">
+      <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; events.highlight()</div>
+      <ul class="space-y-4">
+        {a.eventos_destacados.map((e) => (
+          <li class="border-l-2 border-accent pl-4">
+            <div class="text-[10px] text-accent uppercase tracking-widest mb-1">[{e.zona}]</div>
+            <div class="font-bold uppercase tracking-wider">{e.titulo}</div>
+            <p class="text-sm mt-1 text-ink/90">{e.descripcion}</p>
+            {e.hipotesis && (
+              <p class="text-sm mt-2 text-dim"><span class="text-accent uppercase text-xs">hipótesis // </span>{e.hipotesis}</p>
+            )}
+            {e.fuentes?.length > 0 && (
+              <p class="text-[11px] text-deep mt-2">src: {e.fuentes.join(" · ")}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="mb-10">
+    <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; zones.summary()</div>
+    <div class="grid sm:grid-cols-2 gap-2">
+      {ZONES.map((z) => (
+        <div class="border border-line p-4 bg-panel">
+          <div class="text-accent text-xs uppercase tracking-widest mb-1">[{z.id}] {z.name}</div>
+          <div class="text-[11px] text-deep mb-2">// {z.focus}</div>
+          <p class="text-sm">{a.por_zona?.[z.id] || "sin señales relevantes en este ciclo"}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {(a.senales_debiles?.length > 0 || a.que_vigilar?.length > 0) && (
+    <section class="mb-10 grid sm:grid-cols-2 gap-4">
+      {a.senales_debiles?.length > 0 && (
+        <div class="border border-line p-4 bg-panel">
+          <div class="text-xs text-dim uppercase tracking-widest mb-3">&gt; weak_signals[]</div>
+          <ul class="text-sm space-y-2">
+            {a.senales_debiles.map((s) => <li>· {s}</li>)}
+          </ul>
+        </div>
+      )}
+      {a.que_vigilar?.length > 0 && (
+        <div class="border border-line p-4 bg-panel">
+          <div class="text-xs text-dim uppercase tracking-widest mb-3">&gt; watch_list[]</div>
+          <ul class="text-sm space-y-2">
+            {a.que_vigilar.map((s) => <li>· {s}</li>)}
+          </ul>
+        </div>
+      )}
+    </section>
+  )}
+</Base>

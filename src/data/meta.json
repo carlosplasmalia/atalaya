@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-09-21T08:11:53.007Z",
+  "ciclos_revisados": 2,
+  "rango": {
+    "desde": "2026-09-20T22:43:36.208Z",
+    "hasta": "2026-09-20T22:44:41.152Z"
+  },
+  "sintesis": "Los dos ciclos están separados por apenas un minuto, no cubren dos horas reales, así que la comparación mide persistencia inmediata más que evolución. Los mismos contactos reaparecen en ambos snapshots con posiciones casi idénticas, lo que indica trayectorias estables sin loitering ni cambios de rumbo. La concentración de 30 contactos etiquetados como militares en el estrecho de Taiwán y Mar de China sigue siendo el foco más denso, mientras que Mediterráneo occidental y Levante permanecen sin señales aéreas relevantes. Prensa dominada por Gaza, Cisjordania y un ejercicio naval Sri Lanka India, sin correlato observable en los datos ADS-B de las zonas cubiertas.",
+  "patrones": [
+    "Persistencia de callsigns en Taiwán y Mar de China entre ambos ciclos: CSN5157, CPA698, CSS6828 y CPA216 aparecen en posiciones prácticamente iguales, coherente con rutas comerciales estables más que con maniobras militares nuevas.",
+    "Repetición de CPA256/CSN378 sobre Mar Negro y Ucrania en las dos capturas, con coordenadas casi idénticas: consistente con vuelos en tránsito, no con patrullaje prolongado.",
+    "Advertencia de calidad de dato: varios contactos clasificados como militares tienen prefijos claramente comerciales (CPA Cathay Pacific, CSN China Southern, ANA All Nippon, IBE Iberia, VLG Vueling), lo que probablemente infla las cifras de military_contacts en todas las zonas."
+  ],
+  "contradicciones": [
+    "No se observa ninguna contradicción sólida con la narrativa de prensa. Los titulares sobre operaciones IDF en Cisjordania y ataques en Gaza no tienen reflejo en el feed ADS-B del Levante en este intervalo, lo que es esperable porque el espacio aéreo israelí filtra mucho tráfico militar público."
+  ],
+  "prediccion": "En las próximas 24 horas es probable que se mantenga la actividad densa en el estrecho de Taiwán y Mar de China al nivel actual, dado que la mayoría de contactos parecen ser tráfico comercial regular malclasificado. En Mar Negro cabe esperar continuidad de vuelos en tránsito Estambul Asia sin señales de escalada específica. Levante y Mediterráneo occidental tenderán a seguir opacos por filtrado ADS-B, así que la ausencia de señal no equivale a ausencia de actividad. Incertidumbre alta por dos razones: la ventana real cubierta es de un minuto, no dos horas, y la clasificación militar contiene falsos positivos comerciales que impiden afirmar tendencias operativas con confianza."
+}

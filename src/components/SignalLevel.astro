@@ -1,0 +1,13 @@
+---
+const { level = "bajo", note } = Astro.props;
+const bars = { bajo: "▓░░", medio: "▓▓░", alto: "▓▓▓" };
+const colors = { bajo: "text-signal", medio: "text-accent", alto: "text-danger" };
+const c = colors[level] || colors.bajo;
+const bar = bars[level] || bars.bajo;
+---
+<div class={`inline-flex items-center gap-3 px-3 py-2 border border-line ${c}`}>
+  <span class="font-bold tracking-widest text-xs">SIGNAL</span>
+  <span class="font-bold">{bar}</span>
+  <span class={`uppercase tracking-widest text-xs font-bold`}>{level}</span>
+  {note && <span class="text-dim text-xs">// {note}</span>}
+</div>

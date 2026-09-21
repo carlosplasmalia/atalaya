@@ -1,0 +1,80 @@
+---
+import Base from "../../layouts/Base.astro";
+import SignalLevel from "../../components/SignalLevel.astro";
+import { loadData, loadCycle } from "../../lib/data-source.js";
+import { ZONES } from "../../lib/zones.js";
+
+export async function getStaticPaths() {
+  const { index } = await loadData();
+  return index.map((c) => ({ params: { id: c.id } }));
+}
+
+const { id } = Astro.params;
+const cycle = await loadCycle(id);
+const a = cycle?.analysis || {};
+const m = cycle?.metrics || {};
+
+function fmt(iso) {
+  if (!iso) return "";
+  return new Date(iso).toLocaleString("es-ES", {
+    day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  });
+}
+---
+<Base title={`CYCLE ${fmt(cycle?.startedAt)}`}>
+  <a href="/historico/" class="text-xs text-accent hover:text-ink uppercase tracking-widest">&lt; back to log</a>
+  <div class="mt-3 text-xs text-dim uppercase tracking-widest mb-2">
+    <span class="text-ink">$</span> atalaya cycle --id={id.slice(0, 20)}...
+  </div>
+  <h1 class="text-xl font-bold uppercase tracking-widest mt-2 mb-4">CYCLE {fmt(cycle?.startedAt)}</h1>
+  <div class="mb-6"><SignalLevel level={a.nivel_senal} note={a.nivel_senal_justificacion} /></div>
+
+  <div class="border border-line p-4 bg-panel mb-8">
+    <div class="text-[11px] text-dim uppercase tracking-widest mb-2">&gt; resumen_ejecutivo</div>
+    <p class="text-base leading-relaxed">{a.resumen_ejecutivo}</p>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center mb-10">
+    {[
+      ["mil.contacts", m.military_contacts ?? 0],
+      ["thermal.hits", m.fires ?? 0],
+      ["news.titles", m.news ?? 0],
+      ["seismic.evt", m.quakes ?? 0],
+      ["seismic.susp", m.quakes_suspicious ?? 0],
+    ].map(([l, v]) => (
+      <div class="border border-line p-3 bg-panel">
+        <div class="text-2xl font-bold text-accent">{v}</div>
+        <div class="text-[10px] uppercase tracking-widest text-dim mt-1">{l}</div>
+      </div>
+    ))}
+  </div>
+
+  {a.eventos_destacados?.length > 0 && (
+    <section class="mb-10">
+      <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; events.highlight()</div>
+      <ul class="space-y-4">
+        {a.eventos_destacados.map((e) => (
+          <li class="border-l-2 border-accent pl-4">
+            <div class="text-[10px] text-accent uppercase tracking-widest mb-1">[{e.zona}]</div>
+            <div class="font-bold uppercase tracking-wider">{e.titulo}</div>
+            <p class="text-sm mt-1 text-ink/90">{e.descripcion}</p>
+            {e.hipotesis && <p class="text-sm mt-2 text-dim"><span class="text-accent uppercase text-xs">hipótesis // </span>{e.hipotesis}</p>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="mb-10">
+    <div class="text-[11px] text-dim uppercase tracking-widest mb-3">&gt; zones.summary()</div>
+    <div class="grid sm:grid-cols-2 gap-2">
+      {ZONES.map((z) => (
+        <div class="border border-line p-4 bg-panel">
+          <div class="text-accent text-xs uppercase tracking-widest mb-1">[{z.id}] {z.name}</div>
+          <p class="text-sm">{a.por_zona?.[z.id] || "sin señales relevantes"}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>

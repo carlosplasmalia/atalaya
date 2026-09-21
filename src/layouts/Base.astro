@@ -1,0 +1,55 @@
+---
+import "../styles/crt.css";
+const { title = "ATALAYA :: OSINT.terminal", description = "Vigilancia OSINT de movimientos militares y señales geopolíticas. Actualizado cada hora." } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="bg-bg text-ink font-mono min-h-screen selection:bg-ink selection:text-bg">
+    <header class="border-b border-line">
+      <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between text-xs uppercase">
+        <a href="/" class="flex items-baseline gap-2 group">
+          <span class="text-ink">[</span>
+          <span class="text-ink font-bold tracking-widest">ATALAYA</span>
+          <span class="text-ink">]</span>
+          <span class="text-dim hidden sm:inline">// osint.terminal v0.1</span>
+          <span class="text-ink blink">_</span>
+        </a>
+        <nav class="flex items-center gap-4 tracking-widest">
+          <a href="/" class="hover:text-accent">&gt; ahora</a>
+          <a href="/historico/" class="hover:text-accent">&gt; log</a>
+          <a href="/metodologia/" class="hover:text-accent">&gt; método</a>
+        </nav>
+      </div>
+    </header>
+    <main class="max-w-6xl mx-auto px-5 py-8">
+      <slot />
+    </main>
+    <footer class="border-t border-line mt-16">
+      <div class="max-w-6xl mx-auto px-5 py-6 text-[11px] text-dim leading-relaxed">
+        <div class="mb-2">
+          <span class="text-ink">$</span> atalaya --sources
+        </div>
+        <div class="pl-4">
+          <a class="hover:text-accent" href="https://opensky-network.org">opensky-network.org</a> ·
+          <a class="hover:text-accent" href="https://firms.modaps.eosdis.nasa.gov">nasa.firms</a> ·
+          <a class="hover:text-accent" href="https://www.gdeltproject.org">gdelt.project</a> ·
+          <a class="hover:text-accent" href="https://earthquake.usgs.gov">usgs.eq</a>
+        </div>
+        <div class="mt-3 pl-4 text-deep">
+          # proyecto independiente. hipótesis no confirmadas. no inteligencia clasificada.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

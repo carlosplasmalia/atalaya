@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="METHOD :: Atalaya" description="Cómo funciona Atalaya: fuentes, filtrado, análisis y límites.">
+  <div class="text-xs text-dim uppercase tracking-widest mb-4"><span class="text-ink">$</span> atalaya --readme</div>
+  <h1 class="text-xl font-bold uppercase tracking-widest mb-6">METODOLOGÍA Y LÍMITES</h1>
+
+  <div class="max-w-none space-y-6 text-sm leading-relaxed">
+    <p>
+      Atalaya reúne datos públicos de movimientos aéreos, térmicos, sísmicos y titulares, y genera un boletín cada hora.
+      Cada 4 horas Claude revisa las últimas conclusiones y produce una síntesis. Ejercicio periodístico y OSINT, no servicio de inteligencia.
+    </p>
+
+    <section class="border border-line p-4 bg-panel">
+      <div class="text-[11px] text-accent uppercase tracking-widest mb-3">// sources</div>
+      <ul class="space-y-2">
+        <li><b class="text-accent">OpenSky Network</b> · transpondedores ADS-B. Filtramos por rangos ICAO24 asignados a fuerzas armadas de US, UK, FR, DE, IT, ES, TR, IL, RU, CN, JP, KR, más callsigns habituales.</li>
+        <li><b class="text-accent">NASA FIRMS</b> · focos térmicos VIIRS, útil para artillería, explosiones, incendios de origen humano.</li>
+        <li><b class="text-accent">GDELT 2.0</b> · índice global de titulares. Filtros por conflicto armado, tropas, tensión diplomática.</li>
+        <li><b class="text-accent">USGS</b> · sismos M≥2.5. Los de foco &lt;3km se marcan sospechosos de origen no tectónico.</li>
+      </ul>
+    </section>
+
+    <section class="border border-line p-4 bg-panel">
+      <div class="text-[11px] text-accent uppercase tracking-widest mb-3">// zones</div>
+      <p>Cinco cajas geográficas: Mediterráneo occidental (Estrecho de Gibraltar, Alborán, Baleares), Mar Negro y Ucrania, Levante y Golfo Pérsico, Península coreana, Estrecho de Taiwán.</p>
+    </section>
+
+    <section class="border border-line p-4 bg-panel">
+      <div class="text-[11px] text-accent uppercase tracking-widest mb-3">// pipeline</div>
+      <ul class="space-y-2">
+        <li>· Cada 1h: recogida cruda + análisis rápido con gpt-oss-120b (Groq)</li>
+        <li>· Cada 4h: meta-review con Claude que lee los 4 últimos ciclos, detecta patrones, contradicciones con narrativa oficial y proyecta 24h</li>
+        <li>· Retención local 7 días. Cada ciclo se archiva íntegro para auditar el análisis contra la fuente</li>
+      </ul>
+    </section>
+
+    <section class="border border-line p-4 bg-panel">
+      <div class="text-[11px] text-danger uppercase tracking-widest mb-3">// limits</div>
+      <ul class="space-y-2">
+        <li>· Aeronaves militares con transpondedor apagado o hex spoofed no aparecen. Un vuelo detectado es rutina, un patrón es información.</li>
+        <li>· Los buques militares suelen apagar AIS. La ausencia también es señal.</li>
+        <li>· GDELT recoge titulares, no verdades. Incluye fuentes malas.</li>
+        <li>· Sin imagen satélite en este boletín. Para inspección manual usar Sentinel Hub.</li>
+        <li>· El nivel de señal es cualitativo, no cuantitativo cerrado.</li>
+      </ul>
+    </section>
+
+    <section class="border border-line p-4 bg-panel">
+      <div class="text-[11px] text-dim uppercase tracking-widest mb-3">// disclaimer</div>
+      <p>
+        No somos fuente gubernamental. No accedemos a información clasificada. No damos aviso de amenaza inminente ni asesoramos operativamente. Somos una atalaya: miramos el horizonte con lo que cualquiera puede ver, y contamos qué vemos.
+      </p>
+    </section>
+  </div>
+</Base>
