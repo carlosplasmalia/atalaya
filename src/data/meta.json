@@ -1,20 +1,18 @@
 {
-  "generatedAt": "2026-09-21T18:27:37.914Z",
+  "generatedAt": "2026-09-22T14:27:34.108Z",
   "ciclos_revisados": 4,
   "rango": {
-    "desde": "2026-09-21T15:07:05.334Z",
-    "hasta": "2026-09-21T18:07:04.981Z"
+    "desde": "2026-09-22T11:07:03.157Z",
+    "hasta": "2026-09-22T14:07:03.002Z"
   },
-  "sintesis": "Los cuatro ciclos muestran actividad militar aérea muy baja y dispersa: entre 0 y 3 contactos por ciclo, sin repetición de callsigns ni concentración en una misma zona. La única señal estructural del periodo no es aérea sino civil y política: tensión sostenida en Ceuta con protestas, detenciones y despliegue policial contra la llegada de proetarras y migrantes, mientras el Estrecho de Gibraltar no registra un solo contacto militar. En el resto del mundo predominan titulares (ataques Pakistán-Afganistán, preparativos IDF en Cisjordania, ejercicio SLINEX-26) sin corroboración por sensores ADS-B, FIRMS o USGS.",
+  "sintesis": "Los cuatro ciclos muestran actividad militar aérea baja y dispersa, coherente con operaciones rutinarias de transporte y reabastecimiento de EE. UU. y Reino Unido. Ninguna zona registra loitering, concentración anómala ni patrones de holding. La única señal geopolítica relevante es no aérea: tensión creciente en Ceuta con un ataque a un vehículo de una diputada y aviso de posibles entradas masivas coincidiendo con las elecciones marroquíes del 23. Sin focos térmicos ni sismos sospechosos en el periodo.",
   "patrones": [
-    "Baja saturación militar sostenida en las 4 horas: 5 contactos totales repartidos en Mar Negro (2), Levante (2) y Med-oeste (1), sin ningún callsign repetido entre ciclos ni loitering evidente. Es ruido de fondo, no un patrón operativo.",
-    "Presencia recurrente de aeronaves de vigilancia occidentales sobre el Mar Negro en ciclos alternos (C-12U Huron US Army en el ciclo 15h, A400M turco TUAF861 en el ciclo 17h), consistente con rutina de reconocimiento sobre Ucrania más que con concentración.",
-    "Cluster narrativo sincronizado sobre SLINEX-26: la misma noticia replicada en 5+ dominios de agregación (laosnews, vietnamtribune, malaysiasun, myanmarnews, bignewsnetwork) durante 2 ciclos consecutivos. Es distribución de wire, no señal de escalada.",
-    "Concentración de titulares sobre Ceuta en el ciclo más reciente (protestas, disparos al aire, comparación de Robles con Irak y Líbano) sin ningún contacto militar en zona Gibraltar en ninguno de los 4 ciclos."
+    "Callsign HOIST16 (hex ae621f, US) recurrente en la península coreana en 3 de los 4 ciclos (11h, 12h, 13h), sobre coordenadas casi idénticas (lat 36.77 a 36.96, lon 127.03 a 127.04): sugiere estación fija o patrón de operación local repetitivo, no tránsito.",
+    "Presencia sostenida de aviones logísticos USMC en Corea (SUMO26, SUMO61, KC-130J) combinada con helicópteros UH-60M del Ejército de EE. UU. (CARD27, CARD99): actividad continua de apoyo, consistente con ejercicios o rotación en bases del sur peninsular.",
+    "RAF activa simultáneamente en Mediterráneo occidental (Voyager KC.2/KC.3, callsigns RRR2302, RRR9958) y Levante (A400M RRR4940): puente logístico rutinario Reino Unido a Chipre/Oriente Medio, sin desviaciones."
   ],
   "contradicciones": [
-    "La ministra Robles equipara públicamente la misión militar en Ceuta con Irak y Líbano, pero en 4 horas de ADS-B no se detecta ningún contacto militar en la zona Gibraltar ni tráfico aéreo militar asociable a un despliegue reforzado. La retórica supera lo observable, aunque tropas terrestres no serían visibles en ADS-B y esta contradicción es débil por limitación del sensor.",
-    "Los titulares sobre ataques aéreos pakistaníes en Afganistán se repiten dos ciclos sin ninguna corroboración en FIRMS (0 focos térmicos en los 4 ciclos). Puede deberse a que la zona queda fuera del recorte geográfico monitorizado más que a inexistencia del evento."
+    "El discurso oficial español equipara la misión militar en Ceuta con Irak y Líbano y menciona coordinación con Marruecos ante posibles entradas masivas el 23, pero los sensores ADS-B no muestran refuerzo aéreo militar en Gibraltar ni en el Mediterráneo occidental español en ninguno de los 4 ciclos. La contradicción es débil: puede haber refuerzo por mar o terrestre no visible aquí."
   ],
-  "prediccion": "Para las próximas 24 horas el escenario más probable es continuidad del régimen bajo observado: contactos militares aislados sobre Mar Negro y Levante en la banda de 0 a 3 por ciclo, sin concentración. El foco real de riesgo sigue siendo Ceuta, donde la combinación de protestas, detenciones y encuadre político sugiere posibilidad de nuevos incidentes de orden público en las próximas horas, aunque sin traducción esperada a movimiento aéreo militar detectable. Incertidumbre alta en dos puntos: si Pakistán repite ataques en Afganistán (fuera del recorte de sensores, solo detectable vía prensa) y si la operación IDF anunciada en Cisjordania se materializa (tampoco visible en ADS-B a estas altitudes). No hay señales que anticipen escalada regional en Gibraltar, Corea o Taiwán en la ventana de 24h."
+  "prediccion": "Para las próximas 24 horas se espera continuidad del patrón: actividad USMC/US Army sostenida en Corea con HOIST16 probablemente reapareciendo, puente RAF Mediterráneo-Levante, y nivel general bajo en Gibraltar, Mar Negro y Taiwán. El foco no aéreo es Ceuta: el 23 coincide con elecciones marroquíes y llamamiento a entrar en la ciudad, por lo que es plausible un pico de incidentes de orden público y cobertura mediática intensa. Incertidumbre alta sobre si eso se traduce en despliegue militar visible por ADS-B, ya que un refuerzo por vía terrestre o marítima no dejaría huella en este pipeline."
 }
