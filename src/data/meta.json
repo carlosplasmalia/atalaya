@@ -1,18 +1,16 @@
 {
-  "generatedAt": "2026-09-22T14:27:34.108Z",
+  "generatedAt": "2026-09-22T18:27:21.364Z",
   "ciclos_revisados": 4,
   "rango": {
-    "desde": "2026-09-22T11:07:03.157Z",
-    "hasta": "2026-09-22T14:07:03.002Z"
+    "desde": "2026-09-22T15:07:06.115Z",
+    "hasta": "2026-09-22T18:07:04.924Z"
   },
-  "sintesis": "Los cuatro ciclos muestran actividad militar aérea baja y dispersa, coherente con operaciones rutinarias de transporte y reabastecimiento de EE. UU. y Reino Unido. Ninguna zona registra loitering, concentración anómala ni patrones de holding. La única señal geopolítica relevante es no aérea: tensión creciente en Ceuta con un ataque a un vehículo de una diputada y aviso de posibles entradas masivas coincidiendo con las elecciones marroquíes del 23. Sin focos térmicos ni sismos sospechosos en el periodo.",
+  "sintesis": "Los últimos cuatro ciclos muestran un entorno de señal muy bajo en todas las zonas monitorizadas. Solo se registraron tres contactos militares aislados en las primeras dos horas de la ventana: un C-17A estadounidense (RCH5005) en Mediterráneo occidental, un A400M británico (RRR4940) sobre Levante y un contacto no identificado (MMF64) también en Levante. En las dos horas más recientes no hay contactos militares, focos térmicos ni titulares relevantes, y la única señal sísmica es un sismo superficial M3.5 en Adak, Alaska, sin relación con las zonas de interés.",
   "patrones": [
-    "Callsign HOIST16 (hex ae621f, US) recurrente en la península coreana en 3 de los 4 ciclos (11h, 12h, 13h), sobre coordenadas casi idénticas (lat 36.77 a 36.96, lon 127.03 a 127.04): sugiere estación fija o patrón de operación local repetitivo, no tránsito.",
-    "Presencia sostenida de aviones logísticos USMC en Corea (SUMO26, SUMO61, KC-130J) combinada con helicópteros UH-60M del Ejército de EE. UU. (CARD27, CARD99): actividad continua de apoyo, consistente con ejercicios o rotación en bases del sur peninsular.",
-    "RAF activa simultáneamente en Mediterráneo occidental (Voyager KC.2/KC.3, callsigns RRR2302, RRR9958) y Levante (A400M RRR4940): puente logístico rutinario Reino Unido a Chipre/Oriente Medio, sin desviaciones."
+    "Concentración leve en Levante: dos de los tres contactos militares de la ventana aparecen en la misma zona (RRR4940 A400M RAF cerca de 31.90N 35.20E y MMF64 cerca de 34.56N 32.49E), consistente con corredor logístico habitual hacia Chipre/Jordania, no con loitering",
+    "Silencio operativo sostenido en Gibraltar, Mar Negro, Corea y Taiwán durante las 4 horas, sin ningún contacto militar pese a volúmenes altos de tráfico civil (451 contactos en med-oeste, 119 en Taiwán)",
+    "Tendencia decreciente de actividad militar detectada a lo largo de la ventana: 2 contactos en el ciclo más antiguo, 1 en el siguiente, 0 en los dos más recientes"
   ],
-  "contradicciones": [
-    "El discurso oficial español equipara la misión militar en Ceuta con Irak y Líbano y menciona coordinación con Marruecos ante posibles entradas masivas el 23, pero los sensores ADS-B no muestran refuerzo aéreo militar en Gibraltar ni en el Mediterráneo occidental español en ninguno de los 4 ciclos. La contradicción es débil: puede haber refuerzo por mar o terrestre no visible aquí."
-  ],
-  "prediccion": "Para las próximas 24 horas se espera continuidad del patrón: actividad USMC/US Army sostenida en Corea con HOIST16 probablemente reapareciendo, puente RAF Mediterráneo-Levante, y nivel general bajo en Gibraltar, Mar Negro y Taiwán. El foco no aéreo es Ceuta: el 23 coincide con elecciones marroquíes y llamamiento a entrar en la ciudad, por lo que es plausible un pico de incidentes de orden público y cobertura mediática intensa. Incertidumbre alta sobre si eso se traduce en despliegue militar visible por ADS-B, ya que un refuerzo por vía terrestre o marítima no dejaría huella en este pipeline."
+  "contradicciones": [],
+  "prediccion": "Para las próximas 24 horas se espera que el nivel se mantenga bajo, con contactos esporádicos de transporte aéreo aliado (C-17, A400M, KC-135) en el corredor Mediterráneo occidental hacia Levante como patrón dominante, sin indicios de escalada. Incertidumbre alta por dos motivos: la cobertura ADS-B militar es intermitente y muchos vuelos operacionales vuelan con transpondedor apagado, y las ventanas de 4 horas capturan mal ciclos de patrulla que pueden reactivarse en cualquier momento. Vigilar especialmente reapariciones del callsign MMF64 (no identificado) y cualquier concentración simultánea en Gibraltar y Mar Negro, que sería la primera señal real de ruptura del patrón actual."
 }
